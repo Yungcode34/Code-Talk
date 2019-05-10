@@ -12,7 +12,7 @@ class MessagesHeader extends React.Component{
             <Icon name={"star outline"} color="black"/>
                 </span>
                 <Header.Subheader>
-                    2 Users
+                    3 Users
                 </Header.Subheader>
             </Header>
 
