@@ -3,10 +3,9 @@ import firebase from '../../firebase';
 import uuidv4 from 'uuid/v4';
 import ProgressBar from './ProgressBar';
 import { Segment, Button, Input } from 'semantic-ui-react';
-
 import FileModal from './FileModal';
 
-
+//messaging form component located at the bottom
 class MessageForm extends React.Component{
     state={
         storeageRef: firebase.storage().ref(),
@@ -50,7 +49,6 @@ class MessageForm extends React.Component{
         }
         return message;
     }
-
     sendMessage = () =>{
         const { messagesRef } = this.props;
         const {message, channel} = this.state;
