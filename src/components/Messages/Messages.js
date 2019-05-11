@@ -64,6 +64,7 @@ class Messages extends React.Component{
             return acc;
         },[]);
         this.setState({searchResults});
+        setTimeout(() => this.setState({searchLoading: false}), 1000)
     }
 
     countUniqueUsers = messages =>{
@@ -91,13 +92,14 @@ class Messages extends React.Component{
 
     displayChannelName = channel => channel ? `#${channel.name}` : '';
     render(){
-        const { messagesRef, messages, channel, user, numUniqueUsers, searchTerm, searchResults } = this.state;
+        const { messagesRef, messages, channel, user, numUniqueUsers, searchTerm, searchResults, searchLoading } = this.state;
         return (
             <React.Fragment>
                 <MessagesHeader
                 channelName={this.displayChannelName(channel)}
                 numUniqueUsers={numUniqueUsers}
                 handleSearchChange={this.handleSearchChange}
+                searchLoading={searchLoading}
                 />
 
                 <Segment>
