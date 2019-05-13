@@ -4,6 +4,7 @@ body,
     height:100vh;
     background: #eee;
     padding:1em;
+    font-family: 'Courier New', Courier, monospace;
 }
 
 .menu{

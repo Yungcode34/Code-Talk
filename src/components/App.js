@@ -32,4 +32,5 @@ const mapStateToProps = state =>({
   currentChannel: state.channel.currentChannel
 })
 
+
 export default connect(mapStateToProps)(App);
