@@ -48,6 +48,7 @@ class Messages extends React.Component{
 
             });
             this.countUniqueUsers(loadedMessages);
+            this.countUserPosts(loadedMessages);
         })
     }
 
