@@ -11,7 +11,7 @@ const {channelName, numUniqueUsers, handleSearchChange, searchLoading, isPrivate
             {/*Channel title */}
             <Header fluid="true" as="h2" floated="left" style={{marginBottom:0}}>
                <span>
-                   {channelName}
+                {channelName}
                 Channel
             {!isPrivateChannel && (
             <Icon
