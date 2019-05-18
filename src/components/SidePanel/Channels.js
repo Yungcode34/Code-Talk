@@ -3,7 +3,6 @@ import firebase from '../../firebase';
 import { connect } from 'react-redux';
 import { setCurrentChannel, setPrivateChannel } from '../../actions';
 import { Menu, Icon, Modal, Form, Input, Button, Label } from 'semantic-ui-react';
-import { firestore } from 'firebase';
 
 class Channels extends React.Component {
     
