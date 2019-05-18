@@ -2,6 +2,8 @@ import React from 'react';
 import { Sidebar, Menu, Divider, Button, Modal, Label, Icon, Segment } from 'semantic-ui-react';
 import  {SliderPicker } from 'react-color';
 import firebase from '../../firebase';
+import {connect} from 'react-redux';
+import {setColors} from '../../actions';
 class ColorPanel extends React.Component{
 
     state = {
@@ -9,7 +11,8 @@ class ColorPanel extends React.Component{
         primary: '',
         secondary: '',
         user: this.props.currentUser,
-        usersRef: firebase.database().ref('users')
+        usersRef: firebase.database().ref('users'),
+        userColors: []
     }
 
     componentDidMount() {
@@ -23,7 +26,7 @@ class ColorPanel extends React.Component{
         .child(`${userId}/colors`)
         .on('child_added', snap => {
             userColors.unshift(snap.val());
-            console.log(userColors);
+            this.setState({userColors})
         })
     }
 
@@ -51,12 +54,29 @@ saveColors = (primary, secondary) => {
     .catch(err =>console.error(err));
 }
 
+
+    displayUserColors = colors => (
+        colors.length > 0 && colors.map((color, i)=> (
+                <React.Fragment key={i}>
+                    <Divider/>
+                    <div className="color__container" onClick={()=> this.props.setColors(color.primary, color.secondary)}>
+                      <div className="color__square" style={{background: color.primary}}>
+                          <div className="color__overlay" style={{background: color.secondary}}>
+
+                          </div>
+                      </div>
+                    </div>
+                </React.Fragment>
+        ))
+    )
+    
+
     openModal = () => this.setState({modal: true})
 
     closeModal = () => this.setState({modal: false})
 
     render(){
-        const { modal, primary, secondary } = this.state;
+        const { modal, primary, secondary, userColors } = this.state;
         return (
             <Sidebar
             as={Menu}
@@ -68,6 +88,7 @@ saveColors = (primary, secondary) => {
             >
                 <Divider/>
                 <Button icon="add" size="tiny" color="blue" onClick={this.openModal}/>
+                    {this.displayUserColors(userColors)}
 
                 <Modal basic open={modal} onClose={this.closeModal}>
                         <Modal.Header>Choose App Colors</Modal.Header>
@@ -96,4 +117,4 @@ saveColors = (primary, secondary) => {
     }
 }
 
-export default ColorPanel;
+export default connect(null, {setColors})(ColorPanel);

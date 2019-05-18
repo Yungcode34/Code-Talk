@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid, Header, Icon, Dropdown, Image } from 'semantic-ui-react';
+import { Grid, Header, Icon, Dropdown, Image , Modal, Input} from 'semantic-ui-react';
 import firebase from '../../firebase';
 class UserPanel extends React.Component{
 
@@ -7,6 +7,10 @@ class UserPanel extends React.Component{
         user: this.props.currentUser
     }
 
+
+    openModal = () => this.setState({modal:true})
+
+    closeModal = () => this.setState({modal:false})
 
 dropdownOptions = () =>[
         {
@@ -16,7 +20,7 @@ dropdownOptions = () =>[
         },
         {
             key:'avatar',
-            text: <span>Chnage avatar</span>
+            text: <span onClick={this.openModal}> Chnage avatar</span>
         },
         {
             key:'signput',
@@ -33,10 +37,11 @@ handleSignout = () =>{
 
     render(){
 
-        const { user } = this.state;
+        const { user, modal } = this.state;
+        const {primaryColor} = this.props
 
         return (
-            <Grid style={{ background:'#4c3c4c'}}>
+            <Grid style={{ background: primaryColor}}>
                 <Grid.Column>
                     <Grid.Row style={{ padding: '1.2em', margin:0 }}>
                         {/*app header*/}
@@ -54,6 +59,30 @@ handleSignout = () =>{
                         } options={this.dropdownOptions()} />
                     </Header>
                     </Grid.Row>    
+
+                    <Modal basic open={modal} onClose={this.closeModal}>
+                        <Modal.Header>
+                            CHnage avatar
+                        </Modal.Header>
+                        <Modal.Content>
+                            <Input
+                            fluid
+                            type="file"
+                            label="New Avatar"
+                            name="previewImage"
+                            />
+                            <Grid centered stackable columns={2}>
+                                <Grid.Row centered>
+                                    <Grid.Column className="ui centered aligned grid">
+                                        
+                                    </Grid.Column>
+                                    <Grid.Column>
+                                        
+                                        </Grid.Column>
+                                </Grid.Row>
+                            </Grid>
+                        </Modal.Content>
+                    </Modal>
                 </Grid.Column> 
             </Grid>
         );
