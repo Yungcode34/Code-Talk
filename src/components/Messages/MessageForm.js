@@ -9,6 +9,7 @@ import FileModal from './FileModal';
 class MessageForm extends React.Component{
     state={
         storeageRef: firebase.storage().ref(),
+        typingRef: firebase.database().ref('typing'),
         uploadTask: null,
         uploadState: '',
         percentUploaded:0,
@@ -31,6 +32,23 @@ class MessageForm extends React.Component{
         this.setState({ [event.target.name]: event.target.value })
     }
 
+    handleKeyDown = () =>{
+        const {message, typingRef, channel, user} = this.state;
+        
+        if(message) {
+            typingRef
+            .child(channel.id)
+            .child(user.uid)
+            .set(user.displayName)
+        } else {
+            typingRef
+            .child(channel.id)
+            .child(user.uid)
+            .remove();
+        }
+    }
+
+
     createMessage = (fileUrl = null) =>{
         const message ={
             timestamp: firebase.database.ServerValue.TIMESTAMP,
@@ -51,7 +69,7 @@ class MessageForm extends React.Component{
     }
     sendMessage = () =>{
         const { getMessagesRef } = this.props;
-        const {message, channel} = this.state;
+        const {message, channel,user, typingRef} = this.state;
         if (message) {
             this.setState({ loading: true })
             getMessagesRef()
@@ -60,6 +78,10 @@ class MessageForm extends React.Component{
             .set(this.createMessage())
             .then(()=>{
                 this.setState({loading: false , message: '', error: []})
+                typingRef
+                .child(channel.id)
+                .child(user.uid)
+                .remove();
             })
             .catch(err=>{
                 console.error(err);
@@ -149,6 +171,7 @@ class MessageForm extends React.Component{
                 fluid
                 name="message"
                 onChange={this.handleChange}
+                onKeyDown={this.handleKeyDown}
                 value={message}
                 style={{ marginBottom: '0.7em'}}
                 label={<Button Icon={'add'}/>}
