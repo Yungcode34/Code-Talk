@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid } from 'semantic-ui-react';
+import { Grid , Segment, Button, Header, Icon, Image, Menu, Sidebar } from 'semantic-ui-react';
 import './App.css';
 import { connect } from 'react-redux';
 import ColorPanel from './ColorPanel/ColorPanel';
@@ -18,24 +18,28 @@ const App = ({currentUser, currentChannel, isPrivateChannel, userPosts, primaryC
       currentUser={currentUser}
       primaryColor={primaryColor}
       />
-
+      <Grid stackable columns={2}>
       <Grid.Column style={{ marginLeft:320 }}>
+        <Segment>
         <Messages
         key={currentChannel && currentChannel.id}
         currentChannel={currentChannel}
         currentUser={currentUser}
         isPrivateChannel={isPrivateChannel}
         />
+        </Segment>
       </Grid.Column>
-
-      <Grid.Column width={4}>
+      <Grid.Column width={4} >
+      <Segment>
         <MetaPanel 
         key={currentChannel && currentChannel.name}
         userPosts={userPosts}
         currentChannel={currentChannel}
         isPrivateChannel={isPrivateChannel}
         />
+        </Segment>
       </Grid.Column>
+      </Grid>
   </Grid>
 );
 

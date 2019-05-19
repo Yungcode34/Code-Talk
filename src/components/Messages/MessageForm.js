@@ -26,6 +26,13 @@ class MessageForm extends React.Component{
     }
 
 
+        componentWillUnmount (){
+            if(this.state.uploadTask !== null) {
+                this.state.uploadTask.cancel();
+                this.setState({uploadTask: null});
+            }
+        }
+
 
     openModal = () => this.setState({ modal: true });
 
@@ -35,7 +42,11 @@ class MessageForm extends React.Component{
         this.setState({ [event.target.name]: event.target.value })
     }
 
-    handleKeyDown = () =>{
+    handleKeyDown = event =>{
+
+        if(event.keyCode === 13){
+            this.sendMessage();
+        }
         const {message, typingRef, channel, user} = this.state;
         
         if(message) {
@@ -130,7 +141,7 @@ class MessageForm extends React.Component{
     }
     getPath = () =>{
         if(this.props.isPrivateChannel) {
-            return `chat/private-${this.state.channel.id}`;
+            return `chat/private/${this.state.channel.id}`;
         } else {
             return 'chat/public';
         }
