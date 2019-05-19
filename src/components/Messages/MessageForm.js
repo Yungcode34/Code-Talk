@@ -2,8 +2,10 @@ import React from 'react';
 import firebase from '../../firebase';
 import uuidv4 from 'uuid/v4';
 import ProgressBar from './ProgressBar';
-import { Segment, Button, Input } from 'semantic-ui-react';
+import { Segment, Button, Input, Icon } from 'semantic-ui-react';
 import FileModal from './FileModal';
+import {Picker, emojiIndex} from 'emoji-mart';
+import 'emoji-mart/css/emoji-mart.css';
 
 //messaging form component located at the bottom
 class MessageForm extends React.Component{
@@ -19,6 +21,7 @@ class MessageForm extends React.Component{
         loading: false,
         errors:[],
         modal: false,
+        emojiPicker: false
 
     }
 
@@ -46,7 +49,13 @@ class MessageForm extends React.Component{
             .child(user.uid)
             .remove();
         }
+    };
+
+    handleTogglePicker = () =>{
+        this.setState({emojiPicker: !this.state.emojiPicker});
     }
+
+
 
 
     createMessage = (fileUrl = null) =>{
@@ -164,9 +173,20 @@ class MessageForm extends React.Component{
 
 
 
-        const {errors, message, loading, modal, uploadState, percentUploaded} = this.state;
+        const {errors, message, loading, modal, uploadState, percentUploaded, emojiPicker} = this.state;
         return(
             <Segment className="message__form">
+            {emojiPicker && (
+                
+                <Picker icon widths="2"
+                icon="plus"
+                set="apple"
+                className="emojipicker"
+                title="pick your emoji"
+                emoji="point_up"
+                
+                />
+            )}
                 <Input 
                 fluid
                 name="message"
@@ -174,7 +194,7 @@ class MessageForm extends React.Component{
                 onKeyDown={this.handleKeyDown}
                 value={message}
                 style={{ marginBottom: '0.7em'}}
-                label={<Button Icon={'add'}/>}
+                label={<Button icon={'add'} onClick={this.handleTogglePicker}/>}
                 labelPosition="left"
                 className={
                     errors.some(error => error.message.includes('message')) ? 'error': ''
