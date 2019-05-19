@@ -178,8 +178,7 @@ class MessageForm extends React.Component{
             <Segment className="message__form">
             {emojiPicker && (
                 
-                <Picker icon widths="2"
-                icon="plus"
+                <Picker
                 set="apple"
                 className="emojipicker"
                 title="pick your emoji"
