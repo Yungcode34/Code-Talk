@@ -56,6 +56,28 @@ class MessageForm extends React.Component{
     }
 
 
+    handleAddEmoji = emoji =>{
+        const oldMessage = this.state.message;
+        const newMessage = this.colonToUnicode(`${oldMessage} ${emoji.colons}`)
+        this.setState({message: newMessage, emojiPicker: false});
+        setTimeout(() => this.messageInputRef.focus(), 0);
+    }
+
+
+    colonToUnicode = message => {
+        return message.replace(/:[A-Za-z0-9_+-]+:/g, x =>{
+            x = x.replace(/:/g, "");
+            let emoji = emojiIndex.emojis[x];
+            if(typeof emoji !== "undefined" ){
+                let unicode = emoji.native;
+                if(typeof unicode !== "undefined") {
+                    return unicode;
+                }
+            }
+            x = ":" + x + ":";
+            return x;
+        });
+    };
 
 
     createMessage = (fileUrl = null) =>{
@@ -180,6 +202,7 @@ class MessageForm extends React.Component{
                 
                 <Picker
                 set="apple"
+                onSelect={this.handleAddEmoji}
                 className="emojipicker"
                 title="pick your emoji"
                 emoji="point_up"
@@ -192,8 +215,12 @@ class MessageForm extends React.Component{
                 onChange={this.handleChange}
                 onKeyDown={this.handleKeyDown}
                 value={message}
+                ref={node=> (this.messageInputRef = node)}
                 style={{ marginBottom: '0.7em'}}
-                label={<Button icon={'add'} onClick={this.handleTogglePicker}/>}
+                label={
+                <Button icon={emojiPicker ? 'close' : 'add'}
+                 content={emojiPicker ? 'close' : null}
+                onClick={this.handleTogglePicker}/>}
                 labelPosition="left"
                 className={
                     errors.some(error => error.message.includes('message')) ? 'error': ''
