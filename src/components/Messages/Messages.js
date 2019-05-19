@@ -88,7 +88,7 @@ class Messages extends React.Component{
                     id: snap.key,
                     name: snap.val()
                 })
-                this.setState({typingUsers})
+                this.setState({typingUsers});
             }
         });
         this.addToListeners(channelId, this.state.typingRef, 'child_added');
@@ -121,7 +121,6 @@ class Messages extends React.Component{
         const ref = this.getMessagesRef();
         ref.child(channelId).on('child_added', snap =>{
             loadedMessages.push(snap.val());
-            console.log(loadedMessages);
             this.setState({
                 messages: loadedMessages,
                 messagesLoading: false
@@ -253,13 +252,13 @@ class Messages extends React.Component{
         '';
     }
 
-    displayTypingUsers = users =>{
-        users.length > 0 && users.map(user =>{
-            <div style={{display:"flex", alignItems: "center", marginBottom:'0.2em'}}>
+    displayTypingUsers = users =>
+        users.length > 0 && users.map(user =>(
+            <div style={{display:"flex", alignItems: "center", marginBottom:'0.2em'}} key={user.id}>
             <span className="user__typing"> {user.name} is typing</span> <Typing/>
             </div>
-        })
-    }
+        ))
+    
 
     displayMessageSkeleton = loading =>
         loading ? (
